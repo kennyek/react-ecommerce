@@ -55,6 +55,31 @@ async function login (req, res) {
   }
 }
 
+async function logout (req, res) {
+  const { user } = req;
+  const conditions = { _id: user._id };
+  const update = { token: '' };
+
+  User.findOneAndUpdate(conditions, update, findOneAndUpdateCallback);
+
+  function findOneAndUpdateCallback (error, doc) {
+    let response;
+
+    if (error) {
+      response = {
+        success: false,
+        error,
+      };
+
+      return res.json(response);
+    }
+
+    response = { success: true };
+
+    return res.status(200).send(response);
+  }
+}
+
 async function register (req, res) {
   const userData = req.body;
   const user = new User(userData);
@@ -82,5 +107,6 @@ async function register (req, res) {
 module.exports = {
   auth,
   login,
+  logout,
   register,
 };
