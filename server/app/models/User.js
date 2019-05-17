@@ -65,7 +65,8 @@ async function preSaveCallback (next) {
 }
 
 function comparePassword (providedPassword, callback) {
-  bcrypt.compare(providedPassword, this.password, compareCallback);
+  const user = this;
+  bcrypt.compare(providedPassword, user.password, compareCallback);
 
   function compareCallback (error, isMatch) {
     if (error) { return callback(error); }
