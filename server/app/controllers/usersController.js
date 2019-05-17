@@ -1,6 +1,6 @@
 const { User } = require('../models');
 
-async function registerUser (req, res) {
+async function register (req, res) {
   const userData = req.body;
   const user = new User(userData);
 
@@ -25,5 +25,5 @@ async function registerUser (req, res) {
 }
 
 module.exports = {
-  registerUser,
+  register,
 };
