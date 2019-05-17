@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const SALT_I = 10;
 
 const userSchema = mongoose.Schema({
@@ -42,6 +43,8 @@ const userSchema = mongoose.Schema({
 });
 
 userSchema.pre('save', preSaveCallback);
+userSchema.methods.comparePassword = comparePassword;
+userSchema.methods.generateToken = generateToken;
 
 async function preSaveCallback (next) {
   const user = this;
@@ -58,6 +61,29 @@ async function preSaveCallback (next) {
     return next();
   } catch (error) {
     return next(error);
+  }
+}
+
+function comparePassword (providedPassword, callback) {
+  bcrypt.compare(providedPassword, this.password, compareCallback);
+
+  function compareCallback (error, isMatch) {
+    if (error) { return callback(error); }
+    return callback(null, isMatch);
+  }
+}
+
+function generateToken (callback) {
+  const user = this;
+  const { SECRET } = process.env;
+  const token = jwt.sign(user._id.toHexString(), SECRET);
+
+  user.token = token;
+  return user.save(saveCallback);
+
+  function saveCallback (error, user) {
+    if (error) { return callback(error); }
+    return callback(null, user);
   }
 }
 
