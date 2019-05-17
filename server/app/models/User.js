@@ -45,6 +45,7 @@ const userSchema = mongoose.Schema({
 userSchema.pre('save', preSaveCallback);
 userSchema.methods.comparePassword = comparePassword;
 userSchema.methods.generateToken = generateToken;
+userSchema.statics.findByToken = findByToken;
 
 async function preSaveCallback (next) {
   const user = this;
@@ -86,6 +87,23 @@ function generateToken (callback) {
     if (error) { return callback(error); }
     return callback(null, user);
   }
+}
+
+function findByToken (token, callback) {
+  const user = this;
+  const { SECRET } = process.env;
+
+  jwt.verify(token, SECRET, function (error, decode) {
+    const filter = {
+      '_id': decode,
+      token,
+    };
+
+    user.findOne(filter, function (error, user) {
+      if (error) { return callback(error); }
+      return callback(null, user);
+    });
+  });
 }
 
 const User = mongoose.model('User', userSchema);

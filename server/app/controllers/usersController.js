@@ -1,5 +1,25 @@
 const { User } = require('../models');
 
+async function auth (req, res) {
+  const { user } = req;
+  const { email, firstName, lastName, role, cart, history } = user;
+  const isAdmin = role === 0 ? false : true;
+  const isAuth = true;
+
+  const response = {
+    isAdmin,
+    isAuth,
+    email,
+    firstName,
+    lastName,
+    role,
+    cart,
+    history,
+  };
+
+  res.status(200).json(response);
+}
+
 async function login (req, res) {
   const userData = req.body;
   const conditions = {
@@ -60,6 +80,7 @@ async function register (req, res) {
 }
 
 module.exports = {
+  auth,
   login,
   register,
 };
