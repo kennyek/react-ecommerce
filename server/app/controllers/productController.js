@@ -1,7 +1,9 @@
-const { Brand, Wood } = require('../models');
+const { Article, Brand, Wood } = require('../models');
 
+const addArticle = async (req, res) => addOfType(Article, req, res);
 const addBrand = async (req, res) => addOfType(Brand, req, res);
 const addWood = async (req, res) => addOfType(Wood, req, res);
+const getAllArticles = async (req, res) => getAllOfType(Article, req, res);
 const getAllBrands = async (req, res) => getAllOfType(Brand, req, res);
 const getAllWoods = async (req, res) => getAllOfType(Wood, req, res);
 
@@ -38,8 +40,10 @@ async function getAllOfType (Model, req, res) {
 }
 
 module.exports = {
+  addArticle,
   addBrand,
   addWood,
+  getAllArticles,
   getAllBrands,
   getAllWoods,
 };
