@@ -24,7 +24,7 @@ async function addBrand (req, res) {
   }
 }
 
-async function getAll (req, res) {
+async function getAllBrands (req, res) {
   try {
     const brands = await Brand.find({});
     return res.status(200).send(brands);
@@ -35,5 +35,5 @@ async function getAll (req, res) {
 
 module.exports = {
   addBrand,
-  getAll,
+  getAllBrands,
 };
