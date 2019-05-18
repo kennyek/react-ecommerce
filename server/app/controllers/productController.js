@@ -1,12 +1,16 @@
-const { Brand } = require('../models');
+const { Brand, Wood } = require('../models');
 
-async function addBrand (req, res) {
-  const brandData = req.body;
-  const brand = new Brand(brandData);
+const addBrand = async (req, res) => addOfType(Brand, req, res);
+const addWood = async (req, res) => addOfType(Wood, req, res);
+const getAllBrands = async (req, res) => getAllOfType(Brand, req, res);
+const getAllWoods = async (req, res) => getAllOfType(Wood, req, res);
+
+async function addOfType (Model, req, res) {
+  const data = req.body;
+  const model = new Model(data);
 
   try {
-    console.log(brand);
-    const doc = await brand.save();
+    const doc = await model.save();
 
     const response = {
       success: true,
@@ -24,10 +28,10 @@ async function addBrand (req, res) {
   }
 }
 
-async function getAllBrands (req, res) {
+async function getAllOfType (Model, req, res) {
   try {
-    const brands = await Brand.find({});
-    return res.status(200).send(brands);
+    const model = await Model.find({});
+    return res.status(200).send(model);
   } catch (error) {
     return res.status(400).send(error);
   }
@@ -35,5 +39,7 @@ async function getAllBrands (req, res) {
 
 module.exports = {
   addBrand,
+  addWood,
   getAllBrands,
+  getAllWoods,
 };
