@@ -4,6 +4,7 @@ const controller = require('../../app/controllers/productController');
 const router = express.Router();
 
 router.get('/articles', controller.getAllArticles);
+router.get('/articles/article_by_id', controller.getArticle);
 router.post('/articles', auth, isAdmin, controller.addArticle)
 
 router.get('/brands', controller.getAllBrands);
