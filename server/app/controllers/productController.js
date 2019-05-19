@@ -4,10 +4,26 @@ const { Article, Brand, Wood } = require('../models');
 const addArticle = async (req, res) => addOfType(Article, req, res);
 const addBrand = async (req, res) => addOfType(Brand, req, res);
 const addWood = async (req, res) => addOfType(Wood, req, res);
-const getAllArticles = async (req, res) => getAllOfType(Article, req, res);
 const getAllBrands = async (req, res) => getAllOfType(Brand, req, res);
 const getAllWoods = async (req, res) => getAllOfType(Wood, req, res);
 const getArticle = async (req, res) => getOfType(Article, req, res);
+
+async function getAllArticles (req, res) {
+  const order = req.query.order ? req.query.order : 'asc';
+  const sortBy = req.query.sortBy ? req.query.sortBy : '_id';
+  const limit = req.query.limit ? Number(req.query.limit) : 100;
+
+  Article
+    .find()
+    .populate('brand')
+    .populate('wood')
+    .sort([[sortBy, order]])
+    .limit(limit)
+    .exec((error, articles) => {
+      if (error) { return res.status(400).send(error); }
+      return res.send(articles);
+    })
+}
 
 async function addOfType (Model, req, res) {
   const data = req.body;
