@@ -1,0 +1,15 @@
+{
+  "name": "react-ecommerce",
+  "version": "1.0.0",
+  "repository": "https://github.com/kennyek/react-ecommerce.git",
+  "author": "Kenny Ek <ekkenny@hotmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "concurrently \"yarn run server\" \"yarn run client\"",
+    "server": "cd server && yarn start && cd ..",
+    "client": "cd client && yarn start && cd .."
+  },
+  "dependencies": {
+    "concurrently": "^4.1.0"
+  }
+}
